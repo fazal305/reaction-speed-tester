@@ -14,7 +14,8 @@ https://fazal305.github.io/reaction-speed-tester/
 
 ## 📸 Preview
 
-Add screenshot here later.
+<img width="1003" height="803" alt="image" src="https://github.com/user-attachments/assets/dc7e4dea-fffb-493d-826d-08247b398223" />
+
 
 ---
 
