@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Reaction Speed Tester</title>
+
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <main id="gameScreen" class="game-screen waiting">
+        <section class="game-box">
+            <p class="eyebrow">Reaction Speed Tester</p>
+
+            <h1 id="gameTitle" class="game-title">Get Ready...</h1>
+
+            <p id="gameMessage" class="game-message">
+                Click start, wait for the flash, then tap as fast as possible.
+            </p>
+
+            <button id="startBtn" class="main-btn" type="button">
+                Start Game
+            </button>
+
+            <section class="stats-panel" aria-label="Game stats">
+                <article class="stat-card">
+                    <h2>Personal Best</h2>
+
+                    <p id="bestScore">No attempts yet</p>
+
+                    <button id="resetBestBtn" class="reset-btn" type="button">
+                        Reset Best
+                    </button>
+                </article>
+
+                <article class="stat-card">
+                    <h2>Last 5 Attempts</h2>
+
+                    <ul id="historyList" class="history-list">
+                        <li>No attempts yet</li>
+                    </ul>
+                </article>
+            </section>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
