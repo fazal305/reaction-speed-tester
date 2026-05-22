@@ -8,7 +8,7 @@ The screen waits a random amount of time before flashing neon green. Click as fa
 
 ## 🚀 Live Demo
 
-Coming Soon...
+https://fazal305.github.io/reaction-speed-tester/
 
 ---
 
