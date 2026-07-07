@@ -1,7 +1,3 @@
-/* 
-   HTML ELEMENTS
-*/
-
 const gameScreen = document.getElementById("gameScreen");
 const gameTitle = document.getElementById("gameTitle");
 const gameMessage = document.getElementById("gameMessage");
@@ -10,152 +6,83 @@ const bestScore = document.getElementById("bestScore");
 const historyList = document.getElementById("historyList");
 const resetBestBtn = document.getElementById("resetBestBtn");
 
-
-/* 
-   GAME VARIABLES
-*/
-
 let gameState = "waiting";
 let goTime = 0;
 let delayTimer = null;
 let attempts = [];
-
-
-/* 
-   LOAD SAVED BEST SCORE
-*/
-
-let personalBest =
-  localStorage.getItem("reactionBest");
-
-
-/* 
-   SHOW SAVED BEST SCORE
-*/
+let personalBest = localStorage.getItem("reactionBest");
 
 if (personalBest !== null) {
   bestScore.textContent = `${personalBest}ms`;
 }
 
-
-/* 
-   CHANGE GAME STATE
-*/
-
 function setGameState(newState) {
-
   gameState = newState;
-
   gameScreen.className = "game-screen";
-
   gameScreen.classList.add(newState);
 }
 
-
-/* 
-   PLAY SIMPLE BEEP SOUND
-*/
-
 function playBeepSound() {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 
-  const audioContext = new AudioContext();
+  if (!AudioContextClass) {
+    return;
+  }
 
-  const oscillator =
-    audioContext.createOscillator();
-
-  const gainNode =
-    audioContext.createGain();
+  const audioContext = new AudioContextClass();
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
 
   oscillator.type = "sine";
-
   oscillator.frequency.value = 650;
-
-  gainNode.gain.value = 0.15;
+  gainNode.gain.value = 0.12;
 
   oscillator.connect(gainNode);
-
-  gainNode.connect(
-    audioContext.destination
-  );
-
+  gainNode.connect(audioContext.destination);
   oscillator.start();
 
-  setTimeout(function () {
-
+  setTimeout(() => {
     oscillator.stop();
-
     audioContext.close();
-
   }, 120);
 }
 
-
-/* 
-   VIBRATE MOBILE DEVICE
-*/
-
-function vibrateDevice() {
-
+function vibrateDevice(pattern = 80) {
   if (navigator.vibrate) {
-    navigator.vibrate(80);
+    navigator.vibrate(pattern);
   }
 }
 
-
-/* 
-   START GAME
-*/
-
 function startGame(event) {
+  if (event) {
+    event.stopPropagation();
+  }
 
-  event.stopPropagation();
-
+  clearTimeout(delayTimer);
   setGameState("countdown");
 
-  gameTitle.textContent =
-    "Wait for it...";
-
-  gameMessage.textContent =
-    "Do not click yet. Wait for the colour flash.";
-
+  gameTitle.textContent = "Wait for it...";
+  gameMessage.textContent = "Do not click yet. Wait for the green flash.";
   startBtn.style.display = "none";
 
-  const randomDelay =
-    Math.floor(Math.random() * 2500) + 1500;
-
-  delayTimer =
-    setTimeout(showGoState, randomDelay);
+  const randomDelay = Math.floor(Math.random() * 2500) + 1500;
+  delayTimer = setTimeout(showGoState, randomDelay);
+  gameScreen.focus();
 }
 
-
-/* 
-   SHOW GO STATE
-*/
-
 function showGoState() {
-
   setGameState("go");
 
-  gameTitle.textContent =
-    "CLICK NOW!";
+  gameTitle.textContent = "Click Now!";
+  gameMessage.textContent = "Tap, click, or press Space as fast as possible.";
 
-  gameMessage.textContent =
-    "Tap anywhere as fast as possible!";
-
-  goTime = Date.now();
+  goTime = performance.now();
 
   playBeepSound();
-
   vibrateDevice();
 }
 
-
-/* 
-   HANDLE SCREEN CLICK
-*/
-
-function handleScreenClick() {
-
+function handleReactionAttempt() {
   if (
     gameState === "waiting" ||
     gameState === "result" ||
@@ -165,191 +92,105 @@ function handleScreenClick() {
   }
 
   if (gameState === "countdown") {
-
     clearTimeout(delayTimer);
-
     showTooEarly();
-
     return;
   }
 
   if (gameState === "go") {
-
-    const clickTime = Date.now();
-
-    const reactionTime =
-      clickTime - goTime;
-
+    const reactionTime = Math.round(performance.now() - goTime);
     showResult(reactionTime);
   }
 }
 
-
-/* 
-   SHOW RESULT
-*/
-
 function showResult(reactionTime) {
-
   setGameState("result");
 
-  const rating =
-    getReactionRating(reactionTime);
-
-  gameTitle.textContent =
-    `${reactionTime}ms`;
-
-  gameMessage.textContent = rating;
+  gameTitle.textContent = `${reactionTime}ms`;
+  gameMessage.textContent = getReactionRating(reactionTime);
 
   updateScores(reactionTime);
 
-  startBtn.textContent =
-    "Play Again";
-
-  startBtn.style.display =
-    "inline-block";
+  startBtn.textContent = "Play Again";
+  startBtn.style.display = "inline-block";
 }
-
-
-/* 
-   SHOW TOO EARLY MESSAGE
-*/
 
 function showTooEarly() {
-
   setGameState("tooearly");
 
-  gameTitle.textContent =
-    "Too Early!";
+  gameTitle.textContent = "Too Early!";
+  gameMessage.textContent = "You jumped the signal. Try again.";
 
-  gameMessage.textContent =
-    "You jumped the gun 💀";
+  startBtn.textContent = "Try Again";
+  startBtn.style.display = "inline-block";
 
-  startBtn.textContent =
-    "Try Again";
-
-  startBtn.style.display =
-    "inline-block";
-
-  vibrateDevice();
+  vibrateDevice([90, 40, 90]);
 }
 
-
-/* 
-   REACTION RATING SYSTEM
-*/
-
 function getReactionRating(milliseconds) {
-
   if (milliseconds < 200) {
-    return "Superhuman ⚡";
+    return "Superhuman";
   }
 
   if (milliseconds <= 300) {
-    return "Elite Reflexes 🔥";
+    return "Elite Reflexes";
   }
 
   if (milliseconds <= 400) {
-    return "Above Average 👍";
+    return "Above Average";
   }
 
   if (milliseconds <= 500) {
-    return "Average Human 😐";
+    return "Average Human";
   }
 
-  return "Are you okay? 💀";
+  return "Needs more coffee";
 }
 
-
-/* 
-   UPDATE SCORES
-*/
-
 function updateScores(reactionTime) {
-
   attempts.unshift(reactionTime);
-
   attempts = attempts.slice(0, 5);
 
-  if (
-    personalBest === null ||
-    reactionTime < Number(personalBest)
-  ) {
-
-    personalBest = reactionTime;
-
-    bestScore.textContent =
-      `${personalBest}ms`;
-
-    localStorage.setItem(
-      "reactionBest",
-      personalBest
-    );
+  if (personalBest === null || reactionTime < Number(personalBest)) {
+    personalBest = String(reactionTime);
+    bestScore.textContent = `${personalBest}ms`;
+    localStorage.setItem("reactionBest", personalBest);
   }
 
   renderHistory();
 }
 
-
-/* 
-   RENDER HISTORY LIST
-*/
-
 function renderHistory() {
-
   historyList.innerHTML = "";
 
-  attempts.forEach(function (
-    attempt,
-    index
-  ) {
-
-    const listItem =
-      document.createElement("li");
-
-    listItem.textContent =
-      `Attempt ${index + 1}: ${attempt}ms - ${getReactionRating(attempt)}`;
-
+  attempts.forEach((attempt, index) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = `Attempt ${index + 1}: ${attempt}ms - ${getReactionRating(attempt)}`;
     historyList.appendChild(listItem);
-
   });
 }
 
-
-/* 
-   RESET BEST SCORE
-*/
-
 function resetBestScore(event) {
-
   event.stopPropagation();
 
   personalBest = null;
-
-  localStorage.removeItem(
-    "reactionBest"
-  );
-
-  bestScore.textContent =
-    "No attempts yet";
+  localStorage.removeItem("reactionBest");
+  bestScore.textContent = "No attempts yet";
 }
 
+function handleKeyPress(event) {
+  if (event.key === " " || event.key === "Enter") {
+    event.preventDefault();
 
-/* 
-   EVENT LISTENERS
-*/
+    if (document.activeElement === startBtn) {
+      return;
+    }
 
-startBtn.addEventListener(
-  "click",
-  startGame
-);
+    handleReactionAttempt();
+  }
+}
 
-gameScreen.addEventListener(
-  "click",
-  handleScreenClick
-);
-
-resetBestBtn.addEventListener(
-  "click",
-  resetBestScore
-);
+startBtn.addEventListener("click", startGame);
+gameScreen.addEventListener("click", handleReactionAttempt);
+resetBestBtn.addEventListener("click", resetBestScore);
+gameScreen.addEventListener("keydown", handleKeyPress);

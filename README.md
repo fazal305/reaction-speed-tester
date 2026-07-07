@@ -1,105 +1,120 @@
-# ⚡ Reaction Speed Tester
+# Reaction Speed Tester
 
-A fun fullscreen reaction-time mini game built with HTML, CSS, and Vanilla JavaScript.
+A fullscreen reaction-time mini game built with HTML, CSS, and vanilla JavaScript.
 
-The screen waits a random amount of time before flashing neon green. Click as fast as possible and test your reflexes in milliseconds.
+The app waits for a random delay, flashes green, and measures how quickly the user clicks or presses a key. It tracks personal best time, shows recent attempts, and gives a simple reaction rating.
 
----
+## Live Links
 
-## 🚀 Live Demo
+- GitHub Repository: https://github.com/fazal305/reaction-speed-tester
+- Live Demo: https://fazal305.github.io/reaction-speed-tester/
 
-https://fazal305.github.io/reaction-speed-tester/
+## Overview
 
----
+Reaction Speed Tester is a small browser game focused on timing, feedback, and quick interaction. It uses random delays, precise browser timing, local storage, sound feedback, vibration support, and a recent-attempts list.
 
-## 📸 Preview
+This is a good portfolio mini-project because it is simple to understand, easy to demo, and shows practical JavaScript state management.
 
-<img width="1003" height="803" alt="image" src="https://github.com/user-attachments/assets/dc7e4dea-fffb-493d-826d-08247b398223" />
-
-
----
-
-## ✨ Features
+## Features
 
 - Fullscreen reaction tester
-- Random delay system
-- Real millisecond timing
-- Too-early detection
+- Random wait delay
+- Precise reaction timing with `performance.now()`
+- Too-early click detection
 - Reaction rating system
-- Personal best tracking
+- Personal best saved with `localStorage`
 - Last 5 attempts history
+- Mouse, touch, and keyboard support
+- Web Audio API sound effect
 - Mobile vibration support
-- Sound effects using Web Audio API
-- Responsive dark-mode UI
-- Smooth transitions and glow effects
-- localStorage score saving
+- Responsive dark-mode interface
+- Reduced-motion support
 
----
+## Reaction Ratings
 
-## 🧠 Reaction Ratings
+| Time        | Rating            |
+| ----------- | ----------------- |
+| Under 200ms | Superhuman        |
+| 200-300ms   | Elite Reflexes    |
+| 300-400ms   | Above Average     |
+| 400-500ms   | Average Human     |
+| Over 500ms  | Needs more coffee |
 
-| Time | Rating |
-|---|---|
-| Under 200ms | Superhuman ⚡ |
-| 200–300ms | Elite Reflexes 🔥 |
-| 300–400ms | Above Average 👍 |
-| 400–500ms | Average Human 😐 |
-| Over 500ms | Are you okay? 💀 |
-
----
-
-## 🛠️ Built With
+## Tech Stack
 
 - HTML5
 - CSS3
-- Vanilla JavaScript
+- JavaScript
+- DOM manipulation
 - Web Audio API
 - Vibration API
 - localStorage
 
----
-
-## 📂 Project Structure
+## Folder Structure
 
 ```text
 reaction-speed-tester/
-│
-├── index.html
-├── style.css
-├── script.js
-└── README.md
+  index.html
+  style.css
+  script.js
+  README.md
+  LICENSE
 ```
 
----
+## Getting Started
 
-## 🎮 How To Play
+1. Clone or download the repository.
+2. Open `index.html` in a browser.
+3. Click `Start Game`.
+4. Wait for the green screen.
+5. Click, tap, or press Space/Enter as fast as possible.
 
-1. Click Start Game
-2. Wait for the screen to flash green
-3. Click as fast as possible
-4. Try to beat your best reaction time
-5. Don't click too early 💀
+No build step or dependencies are required.
 
----
+## Architecture Notes
 
-## 📦 Future Ideas
+The project is split into three main files:
 
-- Online leaderboard
-- Multiplayer reaction battles
-- Difficulty modes
-- Fake-out flashes
-- Custom themes
-- Keyboard support
-- Average reaction analytics
-- Global score tracking
-- Sound toggle
-- Hardcore mode
+- `index.html` defines the game layout and stats sections.
+- `style.css` controls fullscreen states, cards, buttons, responsive layout, and animations.
+- `script.js` manages game state, random timing, scoring, history, sound, vibration, and storage.
 
----
+## Accessibility
 
-## 👨‍💻 Author
+- The game screen is keyboard focusable.
+- Space and Enter can be used to react.
+- Result text uses live-region attributes for screen reader updates.
+- Buttons have visible focus styles.
+- Motion is reduced when the user prefers reduced motion.
 
-Fazal Abbas
+## Performance
 
-GitHub:
-https://github.com/fazal305
+The app is dependency-free and runs fully in the browser. Reaction timing uses `performance.now()` for better precision than `Date.now()`.
+
+## Lessons Learned
+
+- How to manage game state in JavaScript
+- How to use random delays
+- How to measure elapsed time accurately
+- How to store personal best scores with `localStorage`
+- How browser APIs can add sound and haptic feedback
+
+## Future Improvements
+
+- Add average reaction analytics
+- Add difficulty modes
+- Add fake-out flashes
+- Add sound toggle
+- Add leaderboard UI
+- Add keyboard-only challenge mode
+- Add theme options
+
+## Fazal Labs Ecosystem
+
+Part of **Fazal Labs** under the **Fun Lab** suite.
+
+This is a lightweight browser game built to show timing logic, UI feedback, and playful interaction.
+
+## License
+
+MIT License
